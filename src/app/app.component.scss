@@ -1,0 +1,76 @@
+.example-1 {
+  p {
+    /* especificidade: 0,0,0,1 */
+    color: red;
+  }
+  p.blue {
+    /* especificidade: 0,0,1,1 */
+    color: blue;
+  }
+  p#green[id="green"] {
+    /* especificidade: 0,1,0,1 */
+    color: green;
+  }
+  p[title="pink"] {
+    /* especificidade: 0,0,0,1 */
+    color: pink;
+  }
+  p:last-of-type {
+    /* especificidade: 0,0,0,1 */
+    color: purple;
+  }
+}
+
+.example-2 {
+  p {
+    /* especificidade: 0,0,0,1 */
+    color: red !important;
+  }
+  p.blue {
+    /* especificidade: 0,0,1,1 */
+    color: blue !important;
+  }
+  p#green {
+    /* especificidade: 0,1,0,1 */
+    color: green !important;
+  }
+  p[title="pink"] {
+    /* especificidade: 0,0,0,1 */
+    color: pink !important;
+  }
+  p:last-of-type {
+    /* especificidade: 0,0,0,1 */
+    color: purple !important;
+  }
+
+  p {
+    font-size: 16px;
+  }
+}
+
+.example-3 {
+  .no-value {
+    color: red;
+
+    & > li {
+      color: green;
+    }
+
+    & > * {
+      color: blue;
+    }
+  }
+
+  .where {
+    :where(p#red) {
+      color: red;
+    }
+
+    p.green {
+      color: green;
+    }
+    p:hover {
+      color: black;
+    }
+  }
+}
