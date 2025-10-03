@@ -1,76 +1,173 @@
 .example-1 {
-  p {
-    /* especificidade: 0,0,0,1 */
-    color: red;
-  }
-  p.blue {
-    /* especificidade: 0,0,1,1 */
-    color: blue;
-  }
-  p#green[id="green"] {
-    /* especificidade: 0,1,0,1 */
+  p#green {
     color: green;
   }
-  p[title="pink"] {
-    /* especificidade: 0,0,0,1 */
-    color: pink;
-  }
-  p:last-of-type {
-    /* especificidade: 0,0,0,1 */
-    color: purple;
-  }
-}
-
-.example-2 {
-  p {
-    /* especificidade: 0,0,0,1 */
-    color: red !important;
+  p[id="green"] {
+    color: greenyellow;
   }
   p.blue {
-    /* especificidade: 0,0,1,1 */
-    color: blue !important;
-  }
-  p#green {
-    /* especificidade: 0,1,0,1 */
-    color: green !important;
+    color: blue;
   }
   p[title="pink"] {
-    /* especificidade: 0,0,0,1 */
-    color: pink !important;
+    color: pink;
+  }
+  p {
+    color: red;
   }
   p:last-of-type {
-    /* especificidade: 0,0,0,1 */
-    color: purple !important;
-  }
-
-  p {
-    font-size: 16px;
+    color: purple;
   }
 }
 
 .example-3 {
   .no-value {
     color: red;
-
     & > li {
       color: green;
     }
-
+    li {
+      color: gray;
+    }
     & > * {
       color: blue;
     }
+    // li ~ li {
+    //   color: pink;
+    // }
+    // li + li {
+    //   color: purple;
+    // }
+    // > li ~ li {
+    //   color: orange;
+    // }
+    // & + li {
+    //   color: green;
+    // }
   }
 
   .where {
-    :where(p#red) {
+    :where(#red) {
       color: red;
+      &:hover {
+        color: gray;
+      }
     }
 
-    p.green {
+    :where(.green) {
       color: green;
+      &:hover {
+        color: purple;
+      }
     }
-    p:hover {
+
+    li {
       color: black;
     }
   }
+
+  .is {
+    :is(li, #red) {
+      color: red;
+    }
+
+    :is(li, .green) {
+      color: green;
+    }
+  }
+
+  .not {
+    :not(ul, #red) {
+      color: green;
+    }
+
+    :not(ul, .green) {
+      color: red;
+    }
+
+    :not(ul) {
+      color: purple;
+    }
+  }
+
+  .has {
+    &:has(#red) {
+      color: red;
+    }
+
+    &:has(.green) {
+      color: green;
+    }
+
+    &:has(li) {
+      color: purple;
+    }
+  }
 }
+
+.example-4 {
+  li {
+    color: gray;
+  }
+
+  @layer {
+    li#red {
+      background-color: yellow;
+    }
+  }
+
+  @layer default {
+    li#red {
+      color: red;
+    }
+
+    li.green {
+      color: green;
+    }
+  }
+
+  @layer highlight {
+    li {
+      color: purple;
+      background-color: lime;
+    }
+  }
+}
+
+.example-5 {
+  .scope {
+    :scope {
+      li {
+        color: purple;
+      }
+    }
+  }
+  .red {
+    color: red;
+  }
+}
+
+// // EXAMPLE STRUCTURE
+// @layer reset, base, components;
+
+// /* Reset */
+// @layer reset {
+//   button {
+//     all: unset;
+//   }
+// }
+
+// /* Base */
+// @layer base {
+//   button {
+//     font-family: sans-serif;
+//     color: black;
+//   }
+// }
+
+// /* Components */
+// @layer components {
+//   .btn-primary {
+//     color: white;
+//     background: blue;
+//   }
+// }

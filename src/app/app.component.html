@@ -4,12 +4,24 @@
 
 <section>
   <h2>Análise</h2>
-  <p>Resolver conflitos de regras no processo de cascata.</p>
 
-  <h3>A Cascata</h3>
-  <p>A cascata resolve conflitos entre diferentes regras.</p>
+  <h3>Cascata</h3>
+  <p>Resolve conflitos entre diferentes regras.</p>
   <p>Ordem de prioridade:</p>
   <ul>
+    <li>
+      User-agent stylesheets (navegador padrão) — estilos default aplicados pelo
+      browser.
+    </li>
+    <li>Author stylesheets (desenvolvedor) — arquivos CSS.</li>
+    <li>
+      <a
+        target="_blank"
+        href="https://www.thoughtco.com/user-style-sheet-3469931"
+        >User stylesheets</a
+      >
+      — estilos que o usuário pode definir (via navegador ou extensões).
+    </li>
     <li>
       <strong>Importância</strong> → <code>!important</code> do usuário
       <strong>></strong> <code>!important</code> do autor
@@ -25,6 +37,11 @@
       <strong>Ordem</strong> → em caso de empate, vale a última declaração.
     </li>
   </ul>
+  <a
+    target="_blank"
+    href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascade/Cascade#cascading_order"
+    >Cascata / Precedencia</a
+  >
 
   <h3>Herança</h3>
   <p>Valores propagados do pai para os filhos.</p>
@@ -68,6 +85,8 @@
         <td><code>font-size: 1.5em;</code></td>
         <td>
           Resultado depois de aplicar importância, especificidade e ordem.
+          Default: valor herdado (se a propriedade for herdável) ou ao valor
+          inicial (initial value) (se não for herdável)
         </td>
       </tr>
       <tr>
@@ -114,54 +133,40 @@
     em memória das regras CSS aplicadas, permitindo leitura e modificação
     dinâmica de estilos.
   </p>
-  <ul>
-    <li>Cada folha de estilo é um objeto <code>CSSStyleSheet</code>.</li>
-    <li>Cada regra é um objeto <code>CSSRule</code>.</li>
-    <li>
-      Cada conjunto de propriedades é um <code>CSSStyleDeclaration</code>.
-    </li>
-  </ul>
 </section>
 
 <section>
   <h2>Renderização</h2>
 
-    <h3>Visual Formatting Model</h3>
-    <ul>
-      <li>Algoritmo que calcula caixas e determina o layout dessas caixas para cada elemento na árvore de renderização, a fim de determinar o layout final da página.</li>
-      <li>Considera fatores como:
-        <ul>
-          <li>Dimensões das caixas (calculadas pelo box model).</li>
-          <li>Tipo de caixa: bloco, inline ou inline-block.</li>
-          <li>Esquema de posicionamento: fluxo normal, flutuantes, absoluto ou relativo.</li>
-          <li>Contexto de empilhamento: irmãos, pais, z-index.</li>
-          <li>Informações externas: viewport, dimensões de imagens, outros fatores.</li>
-        </ul>
-      </li>
-      <li>Reunindo todos esses fatores, o navegador descobre como o site será exibido para o usuário.</li>
-    </ul>
-  
-    <h3>Box Model</h3>
-    <ul>
-      <li>Um dos fatores que define como os elementos são exibidos em uma página da web e como eles são dimensionados.</li>
-      <li>Cada caixa pode ter:
-        <ul>
-          <li><strong>Conteúdo</strong>: onde ficam textos, imagens ou outros elementos.</li>
-          <li><strong>Padding</strong>: espaço interno entre o conteúdo e a borda.</li>
-          <li><strong>Borda</strong>: contorna o conteúdo e o padding.</li>
-          <li><strong>Margem</strong>: espaço externo entre caixas.</li>
-        </ul>
-      </li>
-      <li>O fundo (cor ou imagem) cobre o conteúdo, o padding e a borda, mas nunca a margem.</li>
-      <li>Se não especificamos <code>width</code> ou <code>height</code>, o navegador usa o conteúdo da caixa para calcular seu tamanho.</li>
-    </ul>
-  
+  <h3>Visual Formatting Model</h3>
+  <ul>
+    <li>
+      Algoritmo que calcula caixas e determina o layout dessas caixas para cada
+      elemento na árvore de renderização, a fim de determinar o layout final da
+      página.
+    </li>
+    <li>
+      Considera fatores como:
+      <ul>
+        <li>Dimensões das caixas (calculadas pelo box model).</li>
+        <li>Tipo de caixa: bloco, inline ou inline-block.</li>
+        <li>
+          Esquema de posicionamento: fluxo normal, flutuantes, absoluto ou
+          relativo.
+        </li>
+        <li>Contexto de empilhamento: irmãos, pais, z-index.</li>
+        <li>
+          Informações externas: viewport, dimensões de imagens, outros fatores.
+        </li>
+      </ul>
+    </li>
+  </ul>
 </section>
 
 <section>
   <h2>Controle da cascata e especificidade</h2>
   <img src="assets/specificity.png" alt="specificity" />
- 
+
   <div class="example-1">
     <h3>Especificidade</h3>
 
@@ -173,20 +178,6 @@
     <p>pseudo-class (purple)</p>
   </div>
 
-  <div class="example-2">
-    <h3>Importância</h3>
-
-    <p style="color: gray !important">inline (gray)</p>
-    <p id="green">id (green)</p>
-    <p class="blue">class (blue)</p>
-    <p title="pink">attribute (pink)</p>
-    <p>element (red)</p>
-    <p>pseudo-class (purple)</p>
-
-    <p>FONT-SIZE: 16px</p>
-  </div>
-
-  
   <div class="example-3">
     <h3>Modificadores</h3>
 
@@ -194,41 +185,83 @@
 
     <ul>
       <li>universal (<code>*</code>)</li>
-      <li>combinadores (<code>&gt; + ~</code>)</li> → tornam o seletor mais específico em relação à seleção, mas não acrescentam nenhum valor ao peso da especificidade
+      <li>combinadores (<code>&gt; + ~</code>)</li>
+      → tornam o seletor mais específico em relação à seleção, mas não
+      acrescentam nenhum valor ao peso da especificidade
       <ul class="no-value">
-        <li>Red</li>
-        <li>Green</li>
-        <li>Blue</li>
+        <li>Lorem</li>
+        <li>Ipsum</li>
+        <li>Dolor</li>
       </ul>
     </ul>
 
     <ul>
       <li><code>:where()</code> sempre tem especificidade zero.</li>
       <ul class="where">
-        <li><p id="red">Red</p></li>
-        <li><p class="green">Green</p></li>
+        <li id="red">Red</li>
+        <li class="green">Green</li>
       </ul>
     </ul>
 
+    <ul>
+      <li>
+        <code>:is()</code> adota a <em>maior</em> especificidade entre os seus
+        seletores.
+      </li>
+      <ul class="is">
+        <li id="red">Red</li>
+        <li class="green">Green</li>
+      </ul>
+    </ul>
 
-    <p><code>:is()</code> adota a <em>maior</em> especificidade entre os seus seletores.</p>
-    <p><code>:not()</code> e <code>:has()</code> herdam a especificidade do seletor interno.</p>
-
+    <ul>
+      <li>
+        <code>:not()</code> e <code>:has()</code> herdam a especificidade do
+        seletor interno.
+      </li>
+      <ul class="not">
+        <li id="red">Red</li>
+        <li class="green">Green</li>
+      </ul>
+      <ul class="has">
+        <li id="red">Red</li>
+        <li class="green">Green</li>
+      </ul>
+    </ul>
   </div>
 
   <div class="example-4">
-    <h3>Layers</h3>
+    <h4>Layer</h4>
+    <p>
+      O at-rule <code>layer</code> permite organizar CSS em camadas nomeadas. A
+      ordem das camadas define a precedência entre blocos de estilos, antes
+      mesmo da especificidade.
+    </p>
+
+    <ul>
+      <li id="red">Red</li>
+      <li class="green">Green</li>
+    </ul>
   </div>
 
   <div class="example-5">
-    <h3>User Agent X Reset Style Sheets</h3>
+    <h4>Scope</h4>
 
-    <p>*  margin: 0; padding: 0;</p>
+    <p>
+      A regra <code>scope</code> permite definir blocos de estilos aplicáveis
+      apenas dentro de uma subárvore DOM específica. Isso ajuda a evitar
+      seletores excessivamente específicos e diminuir acoplamento à estrutura
+      HTML.
+    </p>
+
+    <ul class="scope">
+      <li class="red">Red</li>
+    </ul>
   </div>
 </section>
 
 <!-- 
- Próximos tópicos:
- - CSS Custom Properties (Variables)
- - CSS Performance
--->
+  Próximos tópicos:
+  - CSS Custom Properties (Variables)
+  - CSS Performance
+  -->
