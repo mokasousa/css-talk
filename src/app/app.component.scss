@@ -171,3 +171,131 @@
 //     background: blue;
 //   }
 // }
+
+
+.example-6 {
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: darkslategrey;
+    padding: 0.75rem 1.5rem;
+  }
+  
+  .logo {
+    font-weight: bold;
+    font-size: 1.25rem;
+    color: beige;
+  }
+  
+  .nav-links {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  a {
+    text-decoration: none;
+    color: beige;
+    font-weight: 500;
+    transition: color 0.2s ease;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  
+    a:hover {
+      color: darkkhaki;
+    }
+  
+  /* @scope(a) {
+    &.btn:hover {
+      color: purple;
+    }
+  } */
+  
+  
+  .btn-outline {
+    border: 2px solid beige;
+  }
+  
+  .btn-outline:hover {
+    color: darkkhaki;
+    border-color: darkkhaki;
+  }
+  
+  .btn-primary {
+    background: beige;
+    color: darkslategrey;
+  }
+  
+  .btn-primary:hover {
+    background: darkkhaki;
+  }
+  
+  /* Inclui o root e afeta tudo que tá dentro, até o snd excluindo ele */
+  /* @scope (.container) to (.snd-block) { 
+    p { color: red; }
+  } */
+  
+  /* Exclui o root e afeta tudo que tá dentro, até o snd excluindo ele - NÃO FUNFS fst */
+  /* @scope (.container > *) to (.snd-block) {
+    p { color: red; }
+  } */
+  
+  /* Inclui o root e afeta tudo que tá dentro, até o trd incluindo ele - NÃO FUNFS */
+  /* @scope (.container) to (.trd-block > *) { 
+    p { color: red; }
+  } */
+  
+  /* Exclui o root e afeta tudo que tá dentro, até o snd incluindo ele */
+  /* @scope (.container > *) to (.snd-block > .trd-block) {
+    p { color: red; }
+  } */
+  
+  /* test */
+  /* .light-theme {
+    background: #cccccc;
+  }
+  
+  .dark-theme {
+    background: #333333;
+  }
+  
+  .light-theme p {
+    color: black;
+  }
+  
+  .dark-theme p {
+    color: white;
+  } */
+  
+  /* fix test */
+  /* @scope (.light-theme) {
+    :scope {
+      background: #cccccc;
+    }
+    p {
+      color: black;
+    }
+  }
+  
+  @scope (.dark-theme) {
+    :scope {
+      background: #333333;
+    }
+    p {
+      color: white;
+    }
+  } */
+  
+  /* 
+  - evita a necessidade de selecionar elementos de maneira especifica que pode dificultar sobrepor
+  - evita a necessidade de acoplar seletores à estrutura do DOM
+  - não adiciona especificidade
+  */
+}
+
