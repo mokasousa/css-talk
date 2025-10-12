@@ -241,15 +241,24 @@
     p { color: red; }
   } */
   
-  /* Exclui o root e afeta tudo que tá dentro, até o snd excluindo ele - NÃO FUNFS fst */
-  /* @scope (.container > *) to (.snd-block) {
-    p { color: red; }
-  } */
-  
-  /* Inclui o root e afeta tudo que tá dentro, até o trd incluindo ele - NÃO FUNFS */
-  /* @scope (.container) to (.trd-block > *) { 
-    p { color: red; }
-  } */
+/* Exclui o root e afeta tudo que tá dentro, até o snd excluindo ele - NÃO FUNFS fst */
+/* @scope (.container > *) to (.snd-block) {
+  p { color: red; }
+} */
+/* 
+todo filho de .container é tratado como scope-root, nesse caso se p é o scope não filhos p para aplicar a regra
+*/
+
+/* Inclui o root e afeta tudo que tá dentro, até o trd incluindo ele - NÃO FUNFS*/
+/* @scope (.container) to (.trd-block > *) { 
+  p { color: red; }
+} */
+/* 
+match:
+<p>Sit</p> limit node → ele e descendentes tão fora scope.
+<div class="fth-block"> … </div> → ele e descendentes tão fora scope.
+todo filho de .trd-block é tratado como limit node.
+*/
   
   /* Exclui o root e afeta tudo que tá dentro, até o snd incluindo ele */
   /* @scope (.container > *) to (.snd-block > .trd-block) {
@@ -293,9 +302,31 @@
   } */
   
   /* 
+  @scope = :where(:scope)
   - evita a necessidade de selecionar elementos de maneira especifica que pode dificultar sobrepor
   - evita a necessidade de acoplar seletores à estrutura do DOM
   - não adiciona especificidade
+
+  1. Parsing & building CSSOM / AST
+  - The CSS parser reads a @scope block, recognizes the (scope-start) and optional to (scope-end) selectors.
+  - It creates a CSSScopeRule object containing:
+    start (serialized scope-start selector)
+    end (serialized scope-end selector, or null if none) 
+  - A list of child rules (scoped style rules) under that scope.
+  - For each child selector, mark it as a “scoped selector” rather than a global one.
+  - Store metadata (scope root, limits) in the rule node in the CSSOM / stylesheet tree.
+
+  Quando usar :scope?
+  :scope não muda o match, mas altera o ponto de referência do seletor, ou torna mais claro o contexto em CSS aninhado ou encapsulado..
+  - JavaScript (via querySelector/querySelectorAll)
+    const menu = document.querySelector('ul#menu');
+    const items = menu.querySelectorAll(':scope > li');
+  - shadow DOM
+  - nested selectors (via & or :has())
+    section:has(:scope > h2) {
+      border-top: 2px solid black;
+    }
+  - em @scope
   */
 }
 
