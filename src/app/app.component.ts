@@ -1,19 +1,14 @@
-import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+
+import { SpecificityComponent } from './specificity/specificity.component';
+import { SassAtRulesComponent } from './sass-at-rules/sass-at-rules.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, SpecificityComponent, SassAtRulesComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent implements OnInit {
-  ngOnInit(): void {
-    let firstSheet = document.styleSheets.item(0)?.cssRules;
-    console.log(firstSheet?.item(0)); // a CSSStyleRule
-    console.log(firstSheet?.item(1)); // a CSSStyleRule
-    console.log(firstSheet?.item(0)?.cssText); // a CSSStyleDeclaration object
-    console.log(firstSheet?.item(1)?.cssText); // a CSSStyleDeclaration object
-  }
-}
+export class AppComponent {}

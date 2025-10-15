@@ -1,0 +1,392 @@
+.example-1 {
+  p#green {
+    color: green;
+  }
+  p[id="green"] {
+    color: greenyellow;
+  }
+  p.blue {
+    color: blue;
+  }
+  p[title="pink"] {
+    color: pink;
+  }
+  p {
+    color: red;
+  }
+  p:last-of-type {
+    color: purple;
+  }
+}
+
+.example-3 {
+  .no-value {
+    color: red;
+    & > li {
+      color: green;
+    }
+    li {
+      color: gray;
+    }
+    & > * {
+      color: blue;
+    }
+    // li ~ li {
+    //   color: pink;
+    // }
+    // li + li {
+    //   color: purple;
+    // }
+    // > li ~ li {
+    //   color: orange;
+    // }
+    // & + li {
+    //   color: green;
+    // }
+  }
+
+  .where {
+    :where(#red) {
+      color: red;
+      &:hover {
+        color: gray;
+      }
+    }
+
+    :where(.green) {
+      color: green;
+      &:hover {
+        color: purple;
+      }
+    }
+
+    li {
+      color: black;
+    }
+  }
+
+  .is {
+    :is(li, #red) {
+      color: red;
+    }
+
+    :is(li, .green) {
+      color: green;
+    }
+  }
+
+  .not {
+    :not(ul, #red) {
+      color: green;
+    }
+
+    :not(ul, .green) {
+      color: red;
+    }
+
+    :not(ul) {
+      color: purple;
+    }
+  }
+
+  .has {
+    &:has(#red) {
+      color: red;
+    }
+
+    &:has(.green) {
+      color: green;
+    }
+
+    &:has(li) {
+      color: purple;
+    }
+  }
+}
+
+.example-4 {
+  li {
+    color: gray;
+  }
+
+  @layer {
+    li#red {
+      background-color: yellow;
+    }
+  }
+
+  @layer default {
+    li#red {
+      color: red;
+    }
+
+    li.green {
+      color: green;
+    }
+  }
+
+  @layer highlight {
+    li {
+      color: purple;
+      background-color: lime;
+    }
+  }
+}
+
+.example-5 {
+  .scope {
+    :scope {
+      li {
+        color: purple;
+      }
+    }
+  }
+  .red {
+    color: red;
+  }
+}
+
+// // EXAMPLE STRUCTURE
+// @layer reset, base, components;
+
+// /* Reset */
+// @layer reset {
+//   button {
+//     all: unset;
+//   }
+// }
+
+// /* Base */
+// @layer base {
+//   button {
+//     font-family: sans-serif;
+//     color: black;
+//   }
+// }
+
+// /* Components */
+// @layer components {
+//   .btn-primary {
+//     color: white;
+//     background: blue;
+//   }
+// }
+
+
+.example-6 {
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: darkslategrey;
+    padding: 0.75rem 1.5rem;
+  }
+  
+  .logo {
+    font-weight: bold;
+    font-size: 1.25rem;
+    color: beige;
+  }
+  
+  .nav-links {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  a {
+    text-decoration: none;
+    color: beige;
+    font-weight: 500;
+    transition: color 0.2s ease;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  
+    a:hover {
+      color: darkkhaki;
+    }
+  
+  /* @scope(a) {
+    &.btn:hover {
+      color: purple;
+    }
+  } */
+  
+  
+  .btn-outline {
+    border: 2px solid beige;
+  }
+  
+  .btn-outline:hover {
+    color: darkkhaki;
+    border-color: darkkhaki;
+  }
+  
+  .btn-primary {
+    background: beige;
+    color: darkslategrey;
+  }
+  
+  .btn-primary:hover {
+    background: darkkhaki;
+  }
+  
+  /* Inclui o root e afeta tudo que tá dentro, até o snd excluindo ele */
+  /* @scope (.container) to (.snd-block) { 
+    p { color: red; }
+  } */
+  
+/* Exclui o root e afeta tudo que tá dentro, até o snd excluindo ele - NÃO FUNFS fst */
+/* @scope (.container > *) to (.snd-block) {
+  p { color: red; }
+} */
+/* 
+todo filho de .container é tratado como scope-root, nesse caso se p é o scope não filhos p para aplicar a regra
+*/
+
+/* Inclui o root e afeta tudo que tá dentro, até o trd incluindo ele - NÃO FUNFS*/
+/* @scope (.container) to (.trd-block > *) { 
+  p { color: red; }
+} */
+/* 
+match:
+<p>Sit</p> limit node → ele e descendentes tão fora scope.
+<div class="fth-block"> … </div> → ele e descendentes tão fora scope.
+todo filho de .trd-block é tratado como limit node.
+*/
+  
+  /* Exclui o root e afeta tudo que tá dentro, até o snd incluindo ele */
+  /* @scope (.container > *) to (.snd-block > .trd-block) {
+    p { color: red; }
+  } */
+  
+  /* test */
+  /* .light-theme {
+    background: #cccccc;
+  }
+  
+  .dark-theme {
+    background: #333333;
+  }
+  
+  .light-theme p {
+    color: black;
+  }
+  
+  .dark-theme p {
+    color: white;
+  } */
+  
+  /* fix test */
+  /* @scope (.light-theme) {
+    :scope {
+      background: #cccccc;
+    }
+    p {
+      color: black;
+    }
+  }
+  
+  @scope (.dark-theme) {
+    :scope {
+      background: #333333;
+    }
+    p {
+      color: white;
+    }
+  } 
+  */
+
+  /* diferença entre & (:where(:scope)) e :scope
+  @scope (.dark-theme) {
+    & p {
+      color: white;
+    }
+  } 
+
+  @scope (.dark-theme) {
+    :scope p {
+      color: white;
+    }
+  } 
+  */
+  
+  /* 
+  - evita a necessidade de selecionar elementos de maneira especifica que pode dificultar sobrepor
+  - evita a necessidade de acoplar seletores à estrutura do DOM
+  - não adiciona especificidade
+
+  CSSScopeRule é criado contendo:
+  start (serialized scope-start selector)
+  end (serialized scope-end selector, ou null)
+  - lista de child rules (scoped style rules) desse scope.
+  - Para cada seletor filho, marca como “scoped selector”.
+  - Store metadata (scope root, limits) -> rule node in the CSSOM / stylesheet tree.
+
+  Quando usar :scope?
+  :scope não muda o match, mas altera o ponto de referência do seletor, ou torna mais claro o contexto em CSS aninhado ou encapsulado..
+  - JavaScript (via querySelector/querySelectorAll)
+    const menu = document.querySelector('ul#menu');
+    const items = menu.querySelectorAll(':scope > li');
+  - shadow DOM
+  - nested selectors (via & or :has())
+    section:has(:scope > h2) {
+      border-top: 2px solid black;
+    }
+  - em @scope
+  */
+
+  .example-7 {
+    /* Base card */
+    .card h2 {                      /* specificity 0,1,1 */
+      margin: 0 0 .5rem;
+      color: #222;
+    }
+    .card p {                       /* 0,1,1 */
+      margin: 0 0 1rem;
+    }
+
+    /* “Promo context” override (has to out-specificity base) */
+    .promo .card h2 {               /* 0,2,1 */
+      color: tomato;
+      margin-bottom: .25rem;
+    }
+
+    /* Nested promo inner card needs *another* override: raise again */
+    .promo .card .inner-card h2 {   /* 0,3,1 */
+      color: rebeccapurple;
+    }
+  }
+
+  // /* Base card, low specificity selectors */
+  // @scope (.card) {
+  //   h2 {                         /* 0,0,1  (root .card doesn't add specificity) */
+  //     margin: 0 0 .5rem;
+  //     color: #222;
+  //   }
+  //   p {                          /* 0,0,1 */
+  //     margin: 0 0 1rem;
+  //   }
+  // }
+
+  // /* Local tweak for cards *inside* .promo */
+  // @scope (.promo .card) {
+  //   h2 {                         /* 0,0,1  (ties with base, but closer scope wins) */
+  //     color: tomato;
+  //     margin-bottom: .25rem;
+  //   }
+  // }
+
+  // /* Even more local tweak: inner-card inside promo card */
+  // @scope (.promo .card .inner-card) {
+  //   h2 {                         /* 0,0,1  still low; closest scope wins */
+  //     color: rebeccapurple;
+  //   }
+  // }
+}
+
