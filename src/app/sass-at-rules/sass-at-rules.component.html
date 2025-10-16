@@ -1,1 +1,78 @@
 <h1>SASS At-Rules</h1>
+
+<h2>&#64;mixin / &#64;include</h2>
+
+<p>Agrupa declarações CSS para reutilização.</p>
+
+<section id="ex1">
+  <h3>1 - Variantes</h3>
+  <div class="demo-area">
+    <button class="btn-primary">Primary</button>
+    <button class="btn-secondary">Secondary</button>
+  </div>
+</section>
+
+<section id="ex2">
+  <h3>2 - &#64;content</h3>
+  <div class="demo-area">
+    <div class="card">
+      Este card muda de largura quando a tela é maior que 768px.
+    </div>
+  </div>
+</section>
+
+<section id="ex3">
+  <h3>3 - Múltiplos argumentos</h3>
+  <div class="demo-area">
+    <div class="card-1">Card 1</div>
+    <div class="card-2">Card 2</div>
+    <div class="card-3">Card 3</div>
+    <div class="card-4">Card 4</div>
+  </div>
+</section>
+
+<section id="ex4">
+  <h3>4 - Prefixos sem repetição</h3>
+  <p>
+    Centralize prefixos de propriedades como transform em um único
+    mixin reutilizável.
+  </p>
+  <div class="demo-area">
+    <div class="modal">Janela Modal</div>
+  </div>
+</section>
+
+<section id="ex5">
+  <h3>5 - Catálogo de tamanhos com mapa + mixin</h3>
+  <p>
+    Use mapas Sass para converter nomes em valores, garantindo consistência
+    tipográfica.
+  </p>
+  <div class="demo-area">
+    <p class="text-demo text-sm">Texto pequeno (sm)</p>
+    <p class="text-demo text-md">Texto médio (md)</p>
+    <p class="text-demo text-lg">Texto grande (lg)</p>
+  </div>
+</section>
+
+<section id="ex6">
+  <h3>6 - Reuso modular com &#64;use</h3>
+  <p>
+    Mixins podem ser organizados em módulos. Aqui simulamos um mixin
+    ring importado.
+  </p>
+  <div class="demo-area">
+    <button class="btn-focus">Foco (ring visível)</button>
+  </div>
+</section>
+
+<section id="ex7">
+  <h3>7 - Mixins como valores (avançado)</h3>
+  <p>
+    É possível armazenar e aplicar mixins dinamicamente via
+    meta.get-mixin() e meta.apply().
+  </p>
+  <div class="demo-area">
+    <div class="box">Box estilizado dinamicamente</div>
+  </div>
+</section>
