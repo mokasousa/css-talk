@@ -1,6 +1,14 @@
 @use "sass:meta";
+@use "./shared" as s;
+//@use "shared";
+// @import carrega a variaveis/funções no escopo global
+// @use carrega em escopo nomeado (namespace)
 
-// 1. Variantes
+// 1. @Mixins
+// ** Sass gera o CSS no momento da build — mixins e functions não exitem no fluxo de cascata,
+// ** eles são apenas copiados e colados em cada lugar onde é usado.
+
+// 1.1 Variantes
 #ex1 {
   @mixin btn($background, $color: #fff, $radius: 0.5rem) {
     color: $color;
@@ -15,12 +23,13 @@
   .btn-primary {
     @include btn(greenyellow);
   }
+
   .btn-secondary {
     @include btn(darkkhaki, purple, 0.25rem);
   }
 }
 
-// 2. @content
+// 1.2 @content
 #ex2 {
   @mixin media($min: null, $max: null) {
     @if $min and $max {
@@ -47,20 +56,20 @@
     width: 100%;
     text-align: center;
     border-radius: 0.5rem;
-    @include media($min: 768px) {
+    @include media($max: 768px) {
       width: 40%;
       margin: auto;
     }
   }
 }
 
-// 3. Múltiplos argumentos
+// 1.3 Múltiplos argumentos
 #ex3 {
   .demo-area {
     display: flex;
     gap: 1rem;
   }
-  
+
   @mixin make-card(
     $color,
     $background-color,
@@ -86,97 +95,176 @@
   }
 
   .card-1 {
-    @include make-card(#ffffff, #66314d, #ededed, #ba0060, #dbdbdb, rgba(0, 0, 0, 0.381) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px);
+    @include make-card(
+      #ffffff,
+      #66314d,
+      #ededed,
+      #ba0060,
+      #dbdbdb,
+      rgba(0, 0, 0, 0.381) 0px 15px 25px,
+      rgba(0, 0, 0, 0.05) 0px 5px 10px
+    );
   }
 
   .card-2 {
     @include make-card(
-      #ffffff, #67c272, #ededed, #517d44, #dbdbdb, 
-      rgba(240, 46, 170, 0.4) 5px 5px, rgba(240, 46, 170, 0.3) 10px 10px, rgba(240, 46, 170, 0.2) 15px 15px, rgba(240, 46, 170, 0.1) 20px 20px, rgba(240, 46, 170, 0.05) 25px 25px
+      #ffffff,
+      #67c272,
+      #ededed,
+      #517d44,
+      #dbdbdb,
+      rgba(240, 46, 170, 0.4) 5px 5px,
+      rgba(240, 46, 170, 0.3) 10px 10px,
+      rgba(240, 46, 170, 0.2) 15px 15px,
+      rgba(240, 46, 170, 0.1) 20px 20px,
+      rgba(240, 46, 170, 0.05) 25px 25px
     );
   }
 
-  $make-card: (
-    color:               #000000,
-    background-color:    #d3d3d3,
-    border-color:        #666666,
-    background-hover:    #e6e6e6,
-    border-color-hover:  #888888,
-    shadows:             rgba(0, 0, 0, 0.381) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px
+  @mixin make-card2($options) {
+    color: map-get($options, color);
+    background-color: map-get($options, background-color);
+    border: 1px solid map-get($options, border-color);
+    width: 100px;
+    padding: 1rem;
+    text-align: center;
+    border-radius: 0.5rem;
+    box-shadow: map-get($options, shadows);
+
+    &:hover,
+    &:focus {
+      background-color: map-get($options, background-color-hover);
+      border-color: map-get($options, border-color-hover);
+    }
+  }
+
+  $default-card: (
+    color: #000000,
+    background-color: #d3d3d3,
+    border-color: #666666,
+    background-color-hover: #e6e6e6,
+    border-color-hover: #888888,
+    shadows: (
+      rgba(0, 0, 0, 0.381) 0px 15px 25px,
+      rgba(0, 0, 0, 0.05) 0px 5px 10px,
+    ),
   );
-}
 
-// 4. Transform com prefixos
-@mixin transform($t) {
-  -webkit-transform: $t;
-  -ms-transform: $t;
-  transform: $t;
-}
-
-.modal {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 0.5rem;
-  width: 200px;
-  text-align: center;
-  margin: 1rem auto;
-  @include transform(translateY(0));
-  &:hover {
-    @include transform(translateY(-10px));
+  .card-3 {
+    @include make-card2($default-card);
   }
 }
 
-// 5. Catálogo de tamanhos
-$sizes: (
-  sm: 0.8rem,
-  md: 1rem,
-  lg: 1.4rem,
-);
-
-@mixin text-size($key) {
-  $val: map-get($sizes, $key);
-  @if $val == null {
-    @error "Tamanho `#{$key}` inválido.";
+// 1.4 Propriedade
+#ex4 {
+  @mixin transform($t) {
+    -webkit-transform: $t;
+    -ms-transform: $t;
+    transform: $t;
   }
-  font-size: $val;
+
+  .moving {
+    color: white;
+    background-color: purple;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    width: 100px;
+    cursor: grab;
+    text-align: center;
+    margin: 1rem auto;
+    @include transform(translateY(0));
+    &:hover {
+      @include transform(translateX(100px));
+    }
+  }
 }
 
-.text-sm {
-  @include text-size(sm);
-}
-.text-md {
-  @include text-size(md);
-}
-.text-lg {
-  @include text-size(lg);
-}
+// 1.5 Catálogo de tamanhos
+#ex5 {
+  $font-sizes: (
+    sm: 10px,
+    md: 12px,
+    lg: 14px,
+  );
 
-// 6. @use (simulação)
-@mixin ring($c, $w: 2px) {
-  box-shadow: 0 0 0 $w $c;
-}
+  @mixin text-size($key) {
+    $val: map-get($font-sizes, $key);
+    @if $val == null {
+      @error "Tamanho `#{$key}` inválido.";
+    }
+    font-size: $val;
+  }
 
-// .btn-focus {
-//   @include btn(#0d6efd);
-//   &:focus-visible {
-//     @include ring(#0d6efd, 3px);
-//     outline: none;
-//   }
-// }
-
-// 7. Mixins como valores (sass:meta)
-
-@mixin tone($c) {
-  background: $c;
-  color: white;
-  padding: 1rem;
-  border-radius: 0.5rem;
+  .text-sm {
+    @include text-size(sm);
+  }
+  .text-md {
+    @include text-size(md);
+  }
+  .text-lg {
+    @include text-size(lg);
+  }
 }
 
-@mixin apply-mixin($m, $args...) {
-  @include meta.apply($m, $args...);
+// 2. Funções
+#ex6 {
+  @function shadow($shadow-color: inherit) {
+    /* If shadow-color argument isn't passed,
+     or doesn't successfully parse as a <color>,
+     try to use the --shadow-color *property*
+     from the element instead */
+
+    /* var(--shadow-color) refers to the --shadow-color parameter,
+     rather than a custom property,
+     but can still use a fallback value as normal */
+    @return 2px 2px $shadow-color;
+  }
+
+  .foo {
+    --shadow-color: blue;
+    box-shadow: shadow(); /* produces a blue shadow */
+    /* or just */
+    box-shadow: shadow(blue);
+  }
+
+  // Functions são como variárieis com superpoderes, que permitem o mesmo poder que as propriedades customizadas, 
+  // mas parametrizadas
 }
 
-.box {
-  @include apply-mixin(meta.get-mixin("tone"), rebeccapurple);
+// 3. @EXTEND - Placeholders (%)
+#ex7 {
+  %alert-base {
+    padding: 1rem;
+    border-radius: .5rem;
+    font-weight: 600;
+    margin: 1rem 0;
+    color: white;
+  }
+
+  .alert-info {
+    @extend %alert-base;
+    background: gold;
+  }
+
+  .alert-success {
+    @extend %alert-base;
+    background: seagreen;
+  }
+
+  .alert-error {
+    @extend %alert-base;
+    background: crimson;
+  }
+
+  // %placeholder + @extend -> reutilizar código comum.
+  // @mixin -> quando precisar de customização ou lógica.
+}
+
+// 4. @USE
+#ex8 {
+  background-color: s.$new-color;
+
+  .btn-new-color {
+    @include s.btn-default();
+  }
 }
