@@ -1,4 +1,5 @@
-@use "sass:meta";
+@use "sass:math";
+
 @use "./shared" as s;
 //@use "shared";
 // @import carrega a variaveis/funções no escopo global
@@ -208,34 +209,71 @@
 
 // 2. Funções
 #ex6 {
-  @function shadow($shadow-color: inherit) {
-    /* If shadow-color argument isn't passed,
-     or doesn't successfully parse as a <color>,
-     try to use the --shadow-color *property*
-     from the element instead */
-
-    /* var(--shadow-color) refers to the --shadow-color parameter,
-     rather than a custom property,
-     but can still use a fallback value as normal */
-    @return 2px 2px $shadow-color;
+  .demo-area {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
 
-  .foo {
-    --shadow-color: blue;
-    box-shadow: shadow(); /* produces a blue shadow */
-    /* or just */
+  @function shadow($shadow-color: black) {
+    @return $shadow-color 0px 5px 5px;
+  }
+
+  .card-6 {
+    width: max-content;
+    padding: 1rem;
+    box-shadow: shadow();
+  }
+
+  .card-7 {
+    width: max-content;
+    padding: 1rem;
     box-shadow: shadow(blue);
   }
 
-  // Functions são como variárieis com superpoderes, que permitem o mesmo poder que as propriedades customizadas, 
-  // mas parametrizadas
+  $themes: (
+    primary: #1e90ff,
+    danger: #dc3545,
+    success: #28a745,
+  );
+
+  @function theme-color($name, $opacity: 1) {
+    $color: map-get($themes, $name);
+    @return rgba($color, $opacity);
+  }
+
+  .btn-primary {
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    align-self: flex-start;
+    background: theme-color(primary);
+  }
+
+  .btn-primary:hover {
+    background: theme-color(primary, 0.8);
+  }
+
+  @function to-rem($px, $base: 16) {
+    @return math.div($px, $base) * 1rem;
+  }
+
+  .text-sm {
+    margin: 0;
+    font-size: to-rem(10);
+  }
+
+  .text-md {
+    margin: 0;
+    font-size: to-rem(14, 12);
+  }
 }
 
 // 3. @EXTEND - Placeholders (%)
 #ex7 {
   %alert-base {
     padding: 1rem;
-    border-radius: .5rem;
+    border-radius: 0.5rem;
     font-weight: 600;
     margin: 1rem 0;
     color: white;
