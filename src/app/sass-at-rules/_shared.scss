@@ -1,4 +1,5 @@
 $new-color: #db3474;
+$padding: 1rem;
 
 @mixin btn-default($background: white, $color: black, $radius: 0.5rem) {
     color: $color;

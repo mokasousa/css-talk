@@ -241,14 +241,9 @@
     color: white;
   }
 
-  .alert-info {
+  .alert-warning {
     @extend %alert-base;
     background: gold;
-  }
-
-  .alert-success {
-    @extend %alert-base;
-    background: seagreen;
   }
 
   .alert-error {
@@ -262,9 +257,15 @@
 
 // 4. @USE
 #ex8 {
-  background-color: s.$new-color;
+  $radius: 0.5rem;
 
-  .btn-new-color {
+  .demo-area {
+    padding: s.$padding;
+    border-radius: $radius;
+    background-color: s.$new-color;
+  }
+
+  .btn-default {
     @include s.btn-default();
   }
 }
