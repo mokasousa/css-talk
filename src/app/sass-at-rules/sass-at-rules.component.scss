@@ -238,6 +238,15 @@
   );
 
   @function theme-color($name, $opacity: 1) {
+    @if not map-has-key($colors, $name) {
+      @error "Unknown color '#{$name}'. Expected one of: #{map-keys($colors)}.";
+    }
+
+    @if $opacity < 0 or $opacity > 1 {
+      @warn "Opacity #{$opacity} is out of range (0, 1). Clamping.";
+      $opacity: clamp($opacity, 0, 1);
+    }
+    
     $color: map-get($themes, $name);
     @return rgba($color, $opacity);
   }
@@ -255,7 +264,17 @@
   }
 
   @function to-rem($px, $base: 16) {
-    @return math.div($px, $base) * 1rem;
+    @if type-of($px) != "number" or unit($px) != "px" {
+      // Não compila se $px não for número com unidade px
+      @error "px-to-rem() expects a pixel value, got #{$px}.";
+    }
+
+    @if $base <= 0 {
+      // Compila mas aceita a divisão por zero ou valores negativos
+      @warn "Base font size should be positive, got #{$base}px. Using 16px instead.";
+      $base: 16;
+    }
+    @return ($px / $base) * 1rem;
   }
 
   .text-sm {
