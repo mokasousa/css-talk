@@ -46,7 +46,7 @@
   </div>
 </section>
 
-<h2>&#64;function | &#64;return | &#64;error | &#64;warn</h2>
+<h2>&#64;function | &#64;return | &#64;error | &#64;warn | &#64;debug</h2>
 
 <p>Abstração de fórmulas e comportamentos.</p>
 
@@ -68,7 +68,9 @@
 </section>
 
 <h2>&#64;extend | placeholders (%)</h2>
+
 <p>Para reunir regras CSS idênticas.</p>
+
 <section id="ex7">
   <div class="demo-area">
     <button class="btn-primary">Primary</button>
@@ -82,14 +84,30 @@
     </div>
 
     <ul>
-      <li>item 1</li>
-      <li>item 2 <button class="btn">link</button></li>
+      <li id="item">item 1</li>
+      <li>item 2 <button class="btn" id="btn-item">link</button></li>
     </ul>
   </div>
 </section>
 
-<h2>&#64;use | &#64;import</h2>
+<h2>&#64;at-rule</h2>
+
+<p>Para escapar nesting</p>
+
 <section id="ex8">
+  <div class="demo-area">
+    <button class="btn-rule">Default</button>
+    <button class="btn-rule-primary">Primary</button>
+    <button class="btn-rule-secondary">Secondary</button>
+    <button class="btn-rule-terciary">Terciary</button>
+  </div>
+</section>
+
+<h2>&#64;use | &#64;import</h2>
+
+<p>Para carregar módulos</p>
+
+<section id="ex9">
   <div class="demo-area">
     <button class="btn-default">Default</button>
   </div>

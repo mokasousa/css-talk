@@ -246,8 +246,9 @@
       @warn "Opacity #{$opacity} is out of range (0, 1). Clamping.";
       $opacity: clamp($opacity, 0, 1);
     }
-    
+
     $color: map-get($themes, $name);
+    @debug "color: #{$color}, opacity: #{$opacity}";
     @return rgba($color, $opacity);
   }
 
@@ -274,7 +275,7 @@
       @warn "Base font size should be positive, got #{$base}px. Using 16px instead.";
       $base: 16;
     }
-    @return ($px / $base) * 1rem;
+    @return calc($px / $base) * 1rem;
   }
 
   .text-sm {
@@ -307,7 +308,7 @@
   .btn-secondary {
     @extend .btn-primary !optional;
     background: darkkhaki;
-    color: purple
+    color: purple;
   }
 
   %alert-base {
@@ -331,15 +332,16 @@
   // %placeholder + @extend -> reutilizar código comum.
   // @mixin -> quando precisar de customização ou lógica.
 
-  ul li {
-    @extend button
+  ul li#item {
+    @extend .btn;
   }
 
-  button {
+  .btn {
+    //button.btn, .demo-area .btn
     border: none;
     cursor: pointer;
     background-color: transparent;
-    color:darkturquoise;
+    color: darkturquoise;
 
     &:hover {
       color: cadetblue;
@@ -347,8 +349,71 @@
   }
 }
 
-// 4. @USE
+// 4. @AT-ROOT
 #ex8 {
+  .demo-area {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+
+    @mixin button-build($name, $rules) {
+      @at-root .btn-rule-#{$name} {
+        @each $prop, $val in $rules {
+          #{$prop}: $val;
+        }
+      }
+    }
+
+    .btn-rule {
+      padding: 0.6rem 1rem;
+      background: pink;
+      color: brown;
+
+      @at-root #{&}-primary {
+        padding: 0.6rem 1rem;
+        background: cadetblue;
+        color: #fff;
+      }
+
+      &-secondary {
+        padding: 0.6rem 1rem;
+        background: darkgrey;
+        color: black;
+      }
+
+      @media (min-width: 768px) {
+        & {
+          font-size: 16px;
+
+          // aplica apenas no seletor
+          @at-root (with: rule) {
+            border-style: dashed;
+          }
+        }
+
+        // fica apenas .btn-rule
+        @at-root (without: rule) {
+          .btn-rule {
+            font-size: 20px;
+          }
+        }
+
+        // aplica fora da @media
+        @at-root (without: media) {
+          & {
+            border-radius: 10px;
+          }
+        }
+      }
+
+      // fica apenas .btn-rule-terciary
+      @include button-build(terciary, (color: #fff, background-color: green, padding: 0.5rem 1rem));
+    }
+  }
+}
+
+// 4. @USE
+#ex9 {
   $radius: 0.5rem;
 
   .demo-area {
