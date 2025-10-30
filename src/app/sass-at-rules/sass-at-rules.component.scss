@@ -356,15 +356,15 @@
     flex-direction: row;
     gap: 1rem;
 
-    @mixin button-build($name, $rules) {
-      @at-root .btn-rule-#{$name} {
-        @each $prop, $val in $rules {
+    @mixin button-build($name, $props) {
+      @at-root .btn-root-#{$name} {
+        @each $prop, $val in $props {
           #{$prop}: $val;
         }
       }
     }
 
-    .btn-rule {
+    .btn-root {
       padding: 0.6rem 1rem;
       background: pink;
       color: brown;
@@ -391,9 +391,9 @@
           }
         }
 
-        // fica apenas .btn-rule
+        // fica apenas .btn-root
         @at-root (without: rule) {
-          .btn-rule {
+          .btn-root {
             font-size: 20px;
           }
         }
@@ -406,7 +406,7 @@
         }
       }
 
-      // fica apenas .btn-rule-terciary
+      // fica apenas .btn-root-terciary
       @include button-build(terciary, (color: #fff, background-color: green, padding: 0.5rem 1rem));
     }
   }
