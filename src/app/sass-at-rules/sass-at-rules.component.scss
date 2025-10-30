@@ -407,7 +407,14 @@
       }
 
       // fica apenas .btn-root-terciary
-      @include button-build(terciary, (color: #fff, background-color: green, padding: 0.5rem 1rem));
+      @include button-build(
+        terciary,
+        (
+          color: #fff,
+          background-color: green,
+          padding: 0.5rem 1rem,
+        )
+      );
     }
   }
 }
@@ -424,5 +431,52 @@
 
   .btn-default {
     @include s.btn-default();
+  }
+}
+
+// 5. Controle de fluxo
+#ex10 {
+  .demo-area {
+    display: flex;
+    gap: 1rem;
+  }
+
+  $themes: (
+    primary: #1e90ff,
+    danger: #dc3545,
+    success: #28a745,
+  );
+
+  @for $i from 1 through length($themes) {
+    $name: nth(map-keys($themes), $i);
+    $color: map-get($themes, $name);
+
+    .btn-control-#{$name} {
+      background: $color;
+      color: white;
+      padding: 0.6rem 1rem;
+      border-radius: 0.5rem;
+      border: none;
+      cursor: pointer;
+
+      &:hover {
+        background: lighten($color, 5%);
+      }
+    }
+  }
+
+  $i: 1;
+  $length: length($themes) - 1;
+
+  @while $i <= $length {
+    $name: nth(map-keys($themes), $i);
+    $color: map-get($themes, $name);
+
+    .btn-control-#{$name} {
+      padding: (0.6rem + $i * 0.1rem) (1rem + $i * 0.1rem);
+      background: darken($color, ($i * 10%));
+    }
+
+    $i: $i + 1;
   }
 }
