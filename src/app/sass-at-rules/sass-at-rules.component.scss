@@ -291,7 +291,7 @@
 
 // 3. @EXTEND - Placeholders (%)
 #ex7 {
-  .btn-primary {
+  .btn-extend-primary {
     border: none;
     border-radius: 0.5rem;
     padding: 0.5rem 1rem;
@@ -305,8 +305,8 @@
     }
   }
 
-  .btn-secondary {
-    @extend .btn-primary !optional;
+  .btn-extend-secondary {
+    @extend .btn-extend-primary !optional;
     background: darkkhaki;
     color: purple;
   }
